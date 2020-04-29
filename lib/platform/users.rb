@@ -26,7 +26,6 @@ module Platform
 
     def user_signup(user_params)
       user = User.new(user_params)
-      binding.pry
       if user.save
         {:response => '200'}
       else
