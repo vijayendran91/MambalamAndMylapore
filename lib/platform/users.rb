@@ -1,36 +1,44 @@
-require '././model/user'
 require 'pry'
 require 'bcrypt'
+require './lib/services/user_service'
 
 module Platform
   module Users
     include Platform::UserData
     include BCrypt
-
-    def get_all_users
-      users = User.all
-      users=users.map {|user| UserSerialize.new(user)}.to_json
-      users
-    end
+    include MamAndMyl::Services::UserService
 
     def check_user_sign_in(params)
-      user = User.where(:id => params[:id]).first
+      user = get_user_by_id(param[:id])
       password = Password.new(user[:password])
       user.to_json
     end
 
-    def get_user_with_username(username)
-      user = User.where(:uname => username).first
-      user
+    #Create
+    def user_signup(user_params)
+      user = create_user(user_params)
+      if user.save
+        {:response => '200'}.to_json
+      else
+        user.errors.messages.to_json
+      end
     end
 
-    def user_signup(user_params)
-      user = User.new(user_params)
-      if user.save
-        {:response => '200'}
-      else
-        user.errors.messages
-      end
+    #Read
+    def get_users
+      users = get_all_users
+      users = users.map {|user| UserSerialize.new(user)}.to_json
+      users
+    end
+    
+    #Update
+    def user_update(user_id, params)
+      update_user(user_id, params)
+    end
+
+    #delete
+    def delete_user(user_id)
+      destroy_user(user_id)
     end
   end
 end

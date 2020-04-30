@@ -4,7 +4,8 @@ require 'sinatra/namespace'
 require './model/product_type'
 require './model/user'
 require 'pry'
-require './lib/platform/users.rb'
+require './lib/services/user_service'
+require './lib/platform/users'
 include Platform::Product
 include Platform::UserData
 include Platform::Users
@@ -18,7 +19,7 @@ class ApiApp < Sinatra::Base
     helpers do
       def json_params
         begin
-            JSON.parse(request.body.read).with_indifferent_access
+          JSON.parse(request.body.read).with_indifferent_access
         rescue
           halt 400, {:message => "Invalid JSON"}.to_json
         end
@@ -46,12 +47,12 @@ class ApiApp < Sinatra::Base
       end
     end
 
-    post "/signup" do
+    post "/user/signup" do
       user_signup(json_params)
     end
 
     get "/users" do
-      get_all_users
+      get_users
     end
 
     delete "/all_users" do
@@ -61,8 +62,17 @@ class ApiApp < Sinatra::Base
       end
     end
 
+    delete "/user" do
+      user_id = json_params[:id]
+      delete_user(user_id)
+    end
+
     get "/signin/:id/password/:password" do
       check_user_sign_in(params)
+    end
+
+    put "/update/user/:id" do
+      user_update(params[:id], json_params)
     end
   end
 
