@@ -30,36 +30,18 @@ class ApiApp < Sinatra::Base
       end
     end
 
-
-    get "/product_type" do
-      product_types=ProductType.all()
-      product_types.map {|product_type| ProductTypeSerialize.new(product_type)}.to_json
-    end
-
-    post "/product_type" do
-      product_type = ProductType.new(json_params)
-      if product_type.save
-        response.headers['Location']= "#{base_url}/product_type/#{product_type[:id]}"
-        status 201
-      else
-        status 401
-        body ProductTypeSerialize.new(product_type).to_json
-      end
-    end
-
     post "/user/signup" do
-      user_signup(json_params)
+      data = nil
+      begin
+        data = user_signup(json_params)
+      rescue MamAndMyl::Errors::InvalidUserDetailsError => e
+        data = {:errors => {:message => e.message}}.to_json
+      end
+      data
     end
 
     get "/users" do
       get_users
-    end
-
-    delete "/all_users" do
-      users = User.all
-      users.each do |user|
-        user.destroy
-      end
     end
 
     delete "/user" do

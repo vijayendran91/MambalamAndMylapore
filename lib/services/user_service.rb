@@ -1,9 +1,10 @@
 require '././model/user'
 require 'pry'
-
+require './lib/errors/errors'
 module MamAndMyl
   module Services
     module UserService
+
       def get_user_by_id(id)
         user = User.where(:id => id).first
         user
@@ -16,7 +17,7 @@ module MamAndMyl
 
       def create_user(params)
         user = User.new(params)
-        user
+        user.save
       end
 
       def get_all_users

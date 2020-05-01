@@ -17,6 +17,7 @@ module Platform
       field :lname, :type => String
       field :email, :type => String
       field :password_hash, :type => String
+      field :dob, :type => Date
 
       validates_presence_of :email, :message  => "Email id is required", format: { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
       validates_presence_of :uname, :message => "Username is required"
@@ -36,11 +37,12 @@ module Platform
 
       def self.serialize(user)
         data = {}
-        data[:user_id] = user.id.to_s
-        data[:email] = user.email.to_s
-        data[:first_name] = user.fname.to_s
-        data[:last_name] = user.lname.to_s
-        data[:password] = user.password_hash
+        data[:user_id] = user.id.to_s if !user.id.nil?
+        data[:email] = user.email.to_s if !user.email.nil?
+        data[:first_name] = user.fname.to_s if !user.fname.nil?
+        data[:last_name] = user.lname.to_s if !user.lname.nil?
+        data[:password] = user.password_hash if !user.password_hash.nil?
+        data[:dob] = user.dob if !user.dob.nil?
         data[:errors] = user.errors.to_s if user.errors.any?
         data
       end
