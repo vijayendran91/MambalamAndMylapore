@@ -21,9 +21,3 @@ Feature: User Accounts
   # Scenario: User Signs up without email id
   #     | uname | fname | lname | email | password_hash |
   #     | vijayendran3491 | vijayendran | gopalakrishnan | vijayendran3491 | abcdf |
-
-  Scenario: Listing all users
-    Given User with following details cretes an account using post call
-      | uname | fname | lname | email | password_hash |
-      | vijayendran3491 | vijayendran | gopalakrishnan | vijayendran3491@gmail.com | abcdf |
-    Given I visit "/v1/api/users"

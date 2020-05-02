@@ -11,6 +11,7 @@ gem 'webrat'
 gem 'rest-client'
 gem 'httparty'
 gem 'page-object'
+gem 'launchy'
 
 
 # Required to use some advanced features of# Sinatra, like namespaces

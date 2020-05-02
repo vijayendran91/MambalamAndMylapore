@@ -4,7 +4,6 @@ require 'sinatra/namespace'
 require './model/product_type'
 require './model/user'
 require 'pry'
-require './lib/services/user_service'
 require './lib/platform/users'
 include Platform::Product
 include Platform::UserData
@@ -44,6 +43,21 @@ class ApiApp < Sinatra::Base
       get_users
     end
 
+    get "/user/id/:id" do
+      data = get_user_by_id params
+      data.to_json
+    end
+
+    get "/user/email/:email_id" do
+      data = get_user_by_email params
+      data.to_json
+    end
+
+    get "/user/uname/:uname" do
+      data = get_user_by_uname params
+      data.to_json
+    end
+
     delete "/user" do
       user_id = json_params[:id]
       delete_user(user_id)
@@ -57,5 +71,4 @@ class ApiApp < Sinatra::Base
       user_update(params[:id], json_params)
     end
   end
-
 end

@@ -2,6 +2,7 @@ require 'pry'
 require 'bcrypt'
 require './lib/services/user_service'
 
+
 module Platform
   module Users
     include Platform::UserData
@@ -35,6 +36,45 @@ module Platform
       end
     end
 
+    def get_user_by_id param
+      begin
+        id = BSON::ObjectId(param[:id])
+        get_user_with_id param
+      rescue MamAndMyl::Errors::UserNotFoundError => e
+        {:errors => {:message => e.message}}
+      rescue BSON::ObjectId::Invalid => e
+        {:errors => {:message => e.message}}
+      end
+    end
+
+    def get_user_by_email param
+      begin
+        get_user_with_id param
+      rescue MamAndMyl::Errors::UserNotFoundError => e
+        {:errors => {:message => e.message}}
+      end
+    end
+
+    def get_user_by_username param
+      begin
+        get_user_with_username param
+      rescue MamAndMyl::Errors::UserNotFoundError => e
+        {:errors => {:message => e.message}}
+      end
+    end
+
+    # def get_user(param)
+    #   binding.pry
+    # end
+
+    def get_user_by_uname(params)
+      user = get_user_with_username(params[:user_name])
+    end
+
+    def get_user_by_email(params)
+      user = get_user_with_email(params[:email_id])
+    end
+
     #Update
     def user_update(user_id, params)
       update_user(user_id, params)
@@ -44,7 +84,6 @@ module Platform
     def delete_user(user_id)
       begin
         destroy_user(user_id)
-
       end
     end
   end

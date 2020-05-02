@@ -5,14 +5,19 @@ module MamAndMyl
   module Services
     module UserService
 
-      def get_user_by_id(id)
-        user = User.where(:id => id).first
-        user
+      def get_user_with_id(params)
+        user = User.where(:id => params[:id]).first
+        UserSerialize.new(user)
       end
 
-      def get_user_with_username(username)
-        user = User.where(:uname => username).first
-        user
+      def get_user_with_username(params)
+        user = User.where(:uname => params[:username]).first
+        UserSerialize.new(user)
+      end
+
+      def get_user_with_email(params)
+        user = User.where(:email => params[:email_id]).first
+        UserSerialize.new(user)
       end
 
       def create_user(params)
@@ -34,6 +39,7 @@ module MamAndMyl
         binding.pry
         user.destroy
       end
+
     end
   end
 end
