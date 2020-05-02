@@ -1,6 +1,7 @@
 require '././model/user'
 require 'pry'
 require './lib/errors/errors'
+
 module MamAndMyl
   module Services
     module UserService

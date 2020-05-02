@@ -20,6 +20,5 @@ Given /^User with following details creates an account using post call$/ do |tab
 end
 
 And /^It should be successful$/ do
-  binding.pry
   expect(page.body)
 end

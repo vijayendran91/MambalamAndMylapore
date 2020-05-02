@@ -6,8 +6,8 @@ require './model/user'
 require 'pry'
 require './lib/platform/users'
 include Platform::Product
-include Platform::UserData
-include Platform::Users
+include MamAndMyl::Platform::UserData
+include MamAndMyl::Platform::Users
 Mongoid.load! 'mongoid.config'
 
 
